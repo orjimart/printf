@@ -6,8 +6,7 @@
  */
 int _printf(const char *format, ...)
 {
-	unsigned int mart = 0, a, enumerate, di_enumerate = 0;
-
+	unsigned int mart = 0, a, enumerate = 0;
 	va_list args;
 
 	if (!format || (format[0] == '%' && format[1] == '\0'))
@@ -36,12 +35,6 @@ int _printf(const char *format, ...)
 			our_putchar('%');
 			a++;
 			}
-		else if (format[a + 1] == 'd' || format[a + 1] == 'i')
-		{
-			di_enumerate += di_prints(va_arg(args, int));
-			a++;
-			mart += (di_enumerate - 1);
-		}
 		else
 		{
 		our_putchar('%');
