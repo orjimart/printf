@@ -1,59 +1,46 @@
 #include "main.h"
-
 /**
- * _printf - Function that produces output according to a format.
- * @format: String to be formatted.
- * Return: Number of characters printed (excluding null byte).
+ * _printf - function that produces output according to a format
+ * @format: strintg to be formatted
+ * Return: return the exact strings produced
  */
 int _printf(const char *format, ...)
 {
+	unsigned int mart = 0, a, enumerate = 0;
 	va_list args;
-	unsigned int count = 0;
-	unsigned int i = 0;
 
 	if (!format || (format[0] == '%' && format[1] == '\0'))
 		return (-1);
-
 	va_start(args, format);
 
-	for (; format[i]; i++)
+	for (a = 0; format[a] != '\0'; a++)
 	{
-		if (format[i] == '%')
+		if (format[a] != '%')
 		{
-			if (format[i + 1] == 'c')
-			{
-				our_putchar(va_arg(args, int));
-				i++;
-			}
-			else if (format[i + 1] == 's')
-			{
-				char *str = va_arg(args, char *);
-				if (str == NULL)
-					str = "(null)";
-				while (*str)
-				{
-					our_putchar(*str);
-					str++;
-					count++;
-				}
-				i++;
-			}
-			else if (format[i + 1] == '%')
-			{
-				our_putchar('%');
-				i++;
-			}
-			else
-				our_putchar('%');
+		our_putchar(format[a]);
 		}
+		else if (format[a] == '%' && format[a + 1] == 'c')
+		{
+			our_putchar(va_arg(args, int));
+			a++;
+		}
+		else if (format[a] == '%' && format[a + 1] == 's')
+			{
+			enumerate = di_puts(va_arg(args, char *));
+			mart += (enumerate - 1);
+			a++;
+			}
+		else if (format[a] == '%' && (format[a + 1] == '%'))
+			{
+			our_putchar('%');
+			a++;
+			}
 		else
 		{
-			our_putchar(format[i]);
+		our_putchar('%');
 		}
-		count++;
+		mart += 1;
 	}
-
-	va_end(args);
-	return (count);
+		va_end(args);
+		return (mart);
 }
-
