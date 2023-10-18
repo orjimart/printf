@@ -1,61 +1,59 @@
 #include "main.h"
 
 /**
- * _printf - Custom printf function.
- * @format: The format string.
- * Return: The number of characters printed.
+ * _printf - Function that produces output according to a format.
+ * @format: String to be formatted.
+ * Return: Number of characters printed (excluding null byte).
  */
 int _printf(const char *format, ...)
 {
 	va_list args;
-	unsigned int count = 0, i = 0;
+	unsigned int count = 0;
+	unsigned int i = 0;
 
-	if (!format)
+	if (!format || (format[0] == '%' && format[1] == '\0'))
 		return (-1);
 
 	va_start(args, format);
 
-	while (format && format[i])
+	for (; format[i]; i++)
 	{
-		if (format[i] != '%')
+		if (format[i] == '%')
 		{
-			our_putchar(format[i]);
-			count++;
-		}
-		else if (format[i] == '%' && format[i + 1] == 'c')
-		{
-			our_putchar(va_arg(args, int));
-			count++;
-			i++;
-		}
-		else if (format[i] == '%' && format[i + 1] == 's')
-		{
-			char *str = va_arg(args, char *);
-			if (!str)
-				str = "(null)";
-			while (*str)
+			if (format[i + 1] == 'c')
 			{
-				our_putchar(*str);
-				count++;
-				str++;
+				our_putchar(va_arg(args, int));
+				i++;
 			}
-			i++;
-		}
-		else if (format[i] == '%' && format[i + 1] == '%')
-		{
-			our_putchar('%');
-			count++;
-			i++;
+			else if (format[i + 1] == 's')
+			{
+				char *str = va_arg(args, char *);
+				if (str == NULL)
+					str = "(null)";
+				while (*str)
+				{
+					our_putchar(*str);
+					str++;
+					count++;
+				}
+				i++;
+			}
+			else if (format[i + 1] == '%')
+			{
+				our_putchar('%');
+				i++;
+			}
+			else
+				our_putchar('%');
 		}
 		else
 		{
-			our_putchar('%');
-			count++;
+			our_putchar(format[i]);
 		}
-		i++;
+		count++;
 	}
 
 	va_end(args);
-
 	return (count);
 }
+
