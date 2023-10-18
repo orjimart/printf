@@ -44,3 +44,39 @@ int _printf(const char *format, ...)
 		va_end(args);
 		return (mart);
 }
+
+/**
+ * printf - Custom printf function
+ * @format: Format string
+ *
+ * Return: Number of characters printed
+ */
+int printf(const char *format, ...)
+{
+	va_list args;
+	int printed_chars = 0;
+	int i = 0;
+
+	va_start(args, format);
+
+		if (format[i] != '%')
+		{
+			our_putchar(format[i]);
+			printed_chars++;
+		}
+		else if (format[i] == '%' && (format[i + 1] == 'd' || format[i + 1] == 'i'))
+		{
+			int num = va_arg(args, int);
+			printed_chars += di_prints(num);
+			i++;
+		}
+		else
+		{
+			our_putchar('%');
+			printed_chars++;
+		}
+		i++;
+	
+	va_end(args);
+	return (printed_chars);
+}
