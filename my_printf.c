@@ -6,7 +6,7 @@
  */
 int _printf(const char *format, ...)
 {
-	unsigned int mart = 0, a, enumerate = 0;
+	unsigned int mart = 0, a, enumerate, di_enumerate = 0;
 	va_list args;
 
 	if (!format || (format[0] == '%' && format[1] == '\0'))
@@ -35,6 +35,12 @@ int _printf(const char *format, ...)
 			our_putchar('%');
 			a++;
 			}
+		else if (format[a + 1] == 'd' || format[a + 1] == 'i')
+			{
+			di_enumerate = di_prints(va_arg(args, int));
+			mart += (di_enumerate - 1);
+			a++;
+			}
 		else
 		{
 		our_putchar('%');
@@ -43,40 +49,4 @@ int _printf(const char *format, ...)
 	}
 		va_end(args);
 		return (mart);
-}
-
-/**
- * printf - Custom printf function
- * @format: Format string
- *
- * Return: Number of characters printed
- */
-int printf(const char *format, ...)
-{
-	va_list args;
-	int printed_chars = 0;
-	int i = 0;
-
-	va_start(args, format);
-
-		if (format[i] != '%')
-		{
-			our_putchar(format[i]);
-			printed_chars++;
-		}
-		else if (format[i] == '%' && (format[i + 1] == 'd' || format[i + 1] == 'i'))
-		{
-			int num = va_arg(args, int);
-			printed_chars += di_prints(num);
-			i++;
-		}
-		else
-		{
-			our_putchar('%');
-			printed_chars++;
-		}
-		i++;
-	
-	va_end(args);
-	return (printed_chars);
 }
